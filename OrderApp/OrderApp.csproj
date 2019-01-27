@@ -5,10 +5,33 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20190126195034_Initial.cs" />
+    <Compile Remove="Migrations\20190126195034_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20190126195143_Initial.cs" />
+    <Compile Remove="Migrations\20190126195143_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20190126195237_Initial.cs" />
+    <Compile Remove="Migrations\20190126195237_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20190126214625_Initial.cs" />
+    <Compile Remove="Migrations\20190126214625_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20190126221923_Initial.cs" />
+    <Compile Remove="Migrations\20190126221923_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20190126232558_Update1.cs" />
+    <Compile Remove="Migrations\20190126232558_Update1.Designer.cs" />
+    <Compile Remove="Migrations\20190127094944_Update2.cs" />
+    <Compile Remove="Migrations\20190127094944_Update2.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App"/>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Pages\Admin\" />
   </ItemGroup>
 
 </Project>
