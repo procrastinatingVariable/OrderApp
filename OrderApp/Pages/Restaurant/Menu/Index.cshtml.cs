@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using OrderApp.Model;
 using OrderApp.Models;
 
-namespace OrderApp.Pages.Restaurant
+namespace OrderApp.Pages.Restaurant.Menu
 {
     public class IndexModel : PageModel
     {
@@ -20,41 +19,31 @@ namespace OrderApp.Pages.Restaurant
             _context = context;
         }
 
-        public IList<Order> Order { get;set; }
+        public int? ID { get; set; }
+
+        public IList<MenuItem> MenuItem { get;set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var order = await _context.Order.ToListAsync();
-            order = order.Select(o => o).Where(o => o.ID == id).ToList();
+            ID = id;
+            IList<MenuItem> items = await _context.MenuItem.ToListAsync();
+            items = items.Select(item => item).Where(item => item.Restaurant.ID == id).ToList();
 
-            if (order == null)
+            if (items == null)
             {
                 return NotFound();
             }
 
-            Order = order;
+            MenuItem = items;
 
             return Page();
 
-        }
-
-        public async Task<IActionResult> OnPostAsync(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Order order = await _context.Order.FirstOrDefaultAsync(m => m.ID == id);
-            order.CompletionTime = DateTime.Now;
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
         }
     }
 }

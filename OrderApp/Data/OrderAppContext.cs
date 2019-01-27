@@ -29,15 +29,15 @@ namespace OrderApp.Models
             modelBuilder.Entity<OrderMenuItem>()
                 .HasKey(om => new { om.OrderId, om.MenuItemId });
 
-            modelBuilder.Entity<OrderMenuItem>()
-                .HasOne(om => om.order)
-                .WithMany(o => o.Items)
-                .HasForeignKey(om => om.OrderId);
+            //modelBuilder.Entity<OrderMenuItem>()
+            //    .HasOne(om => om.Order)
+            //    .WithMany(o => o.Items)
+            //    .HasForeignKey(om => om.OrderId);
 
-            modelBuilder.Entity<OrderMenuItem>()
-                .HasOne(om => om.menuItem)
-                .WithMany(mi => mi.Orders)
-                .HasForeignKey(om => om.MenuItemId);
+            //modelBuilder.Entity<OrderMenuItem>()
+            //    .HasOne(om => om.MenuItem)
+            //    .WithMany(mi => mi.Orders)
+            //    .HasForeignKey(om => om.MenuItemId);
         }
 
     }

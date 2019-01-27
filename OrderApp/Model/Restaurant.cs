@@ -14,6 +14,7 @@ namespace OrderApp.Model
 
 
         public ICollection<Order> Orders;
+        public ICollection<MenuItem> MenuItems;
 
     }
 }

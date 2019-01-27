@@ -18,7 +18,8 @@ namespace OrderApp.Model
         public double Price { get; set; }
 
 
-        public ICollection<OrderMenuItem> Orders { get; set; } = new List<OrderMenuItem>();
+        public Restaurant Restaurant { get; set; }
+        public ICollection<OrderMenuItem> OrdersLink { get; set; } = new List<OrderMenuItem>();
 
     }
 }

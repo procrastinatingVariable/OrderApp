@@ -1,43 +1,46 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using OrderApp.Model;
+using OrderApp.Models;
 
-namespace OrderApp.Pages.Restaurant
+namespace OrderApp.Pages.Restaurant.Menu
 {
-    public class AddMenuItemModel : PageModel
+    public class AddModel : PageModel
     {
         private readonly OrderApp.Models.OrderAppContext _context;
 
-
-        public AddMenuItemModel(OrderApp.Models.OrderAppContext context)
+        public AddModel(OrderApp.Models.OrderAppContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-        public Order Order { get; set; }
+        public Model.Restaurant Restaurant { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public IActionResult OnGet(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            Order = await _context.Order.FirstOrDefaultAsync(m => m.ID == id);
+            Restaurant = _context.Restaurant.Find(id);
 
-            if (Order == null)
+            if (Restaurant == null)
             {
                 return NotFound();
             }
+
             return Page();
         }
 
         [BindProperty]
-        public int MenuItemId { get; set; }
+        public MenuItem MenuItem { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -46,15 +49,8 @@ namespace OrderApp.Pages.Restaurant
                 return Page();
             }
 
-            MenuItem menuItem = await _context.MenuItem.FirstOrDefaultAsync(m => m.ID == MenuItemId);
-
-            if (menuItem == null)
-            {
-                return NotFound();
-            }
-
-            Order.AddMenuItem(menuItem);
-
+            Restaurant.MenuItems.Add(MenuItem);
+            _context.MenuItem.Add(MenuItem);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

@@ -23,7 +23,7 @@ namespace OrderApp.Pages.Restaurant
         [BindProperty]
         public Model.Restaurant Restaurant { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
             {
@@ -54,7 +54,7 @@ namespace OrderApp.Pages.Restaurant
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RestaurantExists(Restaurant.Email))
+                if (!RestaurantExists(Restaurant.ID))
                 {
                     return NotFound();
                 }
@@ -67,9 +67,9 @@ namespace OrderApp.Pages.Restaurant
             return RedirectToPage("./Index");
         }
 
-        private bool RestaurantExists(string id)
+        private bool RestaurantExists(int id)
         {
-            return _context.Restaurant.Any(e => e.Email == id);
+            return _context.Restaurant.Any(e => e.ID == id);
         }
     }
 }

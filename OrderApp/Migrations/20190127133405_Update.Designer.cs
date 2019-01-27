@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OrderApp.Models;
 
 namespace OrderApp.Migrations
 {
     [DbContext(typeof(OrderAppContext))]
-    partial class OrderAppContextModelSnapshot : ModelSnapshot
+    [Migration("20190127133405_Update")]
+    partial class Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,11 +67,7 @@ namespace OrderApp.Migrations
 
                     b.Property<double>("Price");
 
-                    b.Property<int?>("RestaurantID");
-
                     b.HasKey("ID");
-
-                    b.HasIndex("RestaurantID");
 
                     b.ToTable("MenuItem");
                 });
@@ -84,15 +82,15 @@ namespace OrderApp.Migrations
 
                     b.Property<DateTime>("CreationTime");
 
-                    b.Property<int>("CustomerID");
+                    b.Property<int?>("CustomerID");
 
-                    b.Property<int>("RestaurantID");
+                    b.Property<int?>("restaurantID");
 
                     b.HasKey("ID");
 
                     b.HasIndex("CustomerID");
 
-                    b.HasIndex("RestaurantID");
+                    b.HasIndex("restaurantID");
 
                     b.ToTable("Order");
                 });
@@ -120,46 +118,48 @@ namespace OrderApp.Migrations
 
                     b.Property<string>("Email");
 
+                    b.Property<int?>("MenuItemID");
+
                     b.Property<string>("Name");
 
                     b.Property<string>("Password");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Restaurant");
-                });
+                    b.HasIndex("MenuItemID");
 
-            modelBuilder.Entity("OrderApp.Model.MenuItem", b =>
-                {
-                    b.HasOne("OrderApp.Model.Restaurant", "Restaurant")
-                        .WithMany()
-                        .HasForeignKey("RestaurantID");
+                    b.ToTable("Restaurant");
                 });
 
             modelBuilder.Entity("OrderApp.Model.Order", b =>
                 {
-                    b.HasOne("OrderApp.Model.Customer", "Customer")
+                    b.HasOne("OrderApp.Model.Customer")
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CustomerID");
 
                     b.HasOne("OrderApp.Model.Restaurant", "Restaurant")
                         .WithMany()
-                        .HasForeignKey("RestaurantID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("restaurantID");
                 });
 
             modelBuilder.Entity("OrderApp.Model.OrderMenuItem", b =>
                 {
-                    b.HasOne("OrderApp.Model.MenuItem", "MenuItem")
-                        .WithMany("OrdersLink")
+                    b.HasOne("OrderApp.Model.MenuItem", "menuItem")
+                        .WithMany("Orders")
                         .HasForeignKey("MenuItemId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("OrderApp.Model.Order", "Order")
-                        .WithMany("MenuItemsLink")
+                    b.HasOne("OrderApp.Model.Order", "order")
+                        .WithMany("Items")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("OrderApp.Model.Restaurant", b =>
+                {
+                    b.HasOne("OrderApp.Model.MenuItem")
+                        .WithMany("Restaurant")
+                        .HasForeignKey("MenuItemID");
                 });
 #pragma warning restore 612, 618
         }

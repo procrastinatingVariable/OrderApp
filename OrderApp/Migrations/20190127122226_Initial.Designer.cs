@@ -133,7 +133,7 @@ namespace OrderApp.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("CustomerID");
 
-                    b.HasOne("OrderApp.Model.Restaurant", "restaurant")
+                    b.HasOne("OrderApp.Model.Restaurant", "Restaurant")
                         .WithMany()
                         .HasForeignKey("restaurantID");
                 });

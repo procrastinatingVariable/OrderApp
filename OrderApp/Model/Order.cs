@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,20 +15,21 @@ namespace OrderApp.Model
 
         public DateTime? CompletionTime { get; set; }
 
-        public Restaurant restaurant { get; set; }
-
-
-        public ICollection<OrderMenuItem> Items { get; set; } = new List<OrderMenuItem>();
+        [Required]
+        public Customer Customer { get; set; }
+        [Required]
+        public Restaurant Restaurant { get; set; }
+        public ICollection<OrderMenuItem> MenuItemsLink { get; set; } = new List<OrderMenuItem>();
 
         public ICollection<MenuItem> GetMenuItems()
         {
-            return Items.Select(item => item).Where(item => item.OrderId == ID).Select(orderMenuItem => orderMenuItem.menuItem).ToList();
+            return MenuItemsLink.Select(item => item).Where(item => item.OrderId == ID).Select(orderMenuItem => orderMenuItem.MenuItem).ToList();
         }
 
         public void AddMenuItem(MenuItem item)
         {
-            OrderMenuItem linkItem = new OrderMenuItem { OrderId = ID, order = this, menuItem = item, MenuItemId = item.ID };
-            Items.Add(linkItem);
+            OrderMenuItem linkItem = new OrderMenuItem { OrderId = ID, Order = this, MenuItem = item, MenuItemId = item.ID };
+            MenuItemsLink.Add(linkItem);
         }
 
     }
