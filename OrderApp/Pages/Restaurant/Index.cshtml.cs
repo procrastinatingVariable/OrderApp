@@ -22,15 +22,17 @@ namespace OrderApp.Pages.Restaurant
 
         public IList<Order> Order { get;set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? restaurantId)
         {
-            if (id == null)
+            if (restaurantId == null)
             {
                 return NotFound();
             }
 
-            var order = await _context.Order.ToListAsync();
-            order = order.Select(o => o).Where(o => o.ID == id).ToList();
+            var order = await _context.Order.Include(o => o.Restaurant)
+                .Select(o => o)
+                .Where(o => o.Restaurant.ID == restaurantId)
+                .ToListAsync();
 
             if (order == null)
             {
@@ -43,18 +45,17 @@ namespace OrderApp.Pages.Restaurant
 
         }
 
-        public async Task<IActionResult> OnPostAsync(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        [BindProperty]
+        public int ID { get; set; }
 
-            Order order = await _context.Order.FirstOrDefaultAsync(m => m.ID == id);
+        public async Task<IActionResult> OnPostAsync()
+        {
+
+            Order order = await _context.Order.FirstOrDefaultAsync(m => m.ID == ID);
             order.CompletionTime = DateTime.Now;
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return Page();
         }
     }
 }

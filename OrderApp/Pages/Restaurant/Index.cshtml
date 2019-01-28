@@ -36,7 +36,8 @@
                 @if (item.CompletionTime == null)
                 {
                     <form method="post">
-                        <button type="submit" asp-route-id="@item.ID" class="btn-success">Mark Completed</button>
+                        <input type="hidden" value="@item.ID" asp-for="ID" />
+                        <button type="submit" class="btn-success">Mark Completed</button>
                     </form>
                 }
                 <a asp-page="./Order/Details" asp-route-id="@item.ID">Details</a> |
